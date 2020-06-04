@@ -2,6 +2,8 @@ FROM gcr.io/cloud-builders/gcloud
 
 ARG HELM_VERSION=v3.2.0
 ENV HELM_VERSION=$HELM_VERSION
+ARG HELM_DIFF_VERSION=v3.1.1
+ENV HELM_DIFF_VERSION=$HELM_DIFF_VERSION
 
 COPY helm.bash /builder/helm.bash
 
@@ -18,4 +20,5 @@ RUN chmod +x /builder/helm.bash && \
 
 ENV PATH=/builder/helm/:$PATH
 
-ENTRYPOINT ["/builder/helm.bash"]
+RUN helm plugin install https://github.com/databus23/helm-diff --version ${HELM_DIFF_VERSION}
+
